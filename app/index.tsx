@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useSeries } from '../src/hooks/useSeries';
 import { SerieItem } from '../src/components/SerieItem';
@@ -7,6 +8,7 @@ import { EmptyState } from '../src/components/EmptyState';
 
 export default function Home() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { series, counts, filter, setFilter, loading, toggleSerie, removeSerie } = useSeries();
 
   function handleDelete(id: number) {
@@ -44,7 +46,10 @@ export default function Home() {
       />
 
       <TouchableOpacity
-        className="absolute bottom-6 right-6 w-16 h-16 bg-indigo-600 rounded-full items-center justify-center shadow-lg"
+        className="absolute right-6 w-16 h-16 bg-indigo-600 rounded-full items-center justify-center shadow-lg"
+        style={{ bottom: insets.bottom + 24 }}
+        activeOpacity={0.8}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         onPress={() => router.push('/form')}
       >
         <Text className="text-white text-3xl">+</Text>

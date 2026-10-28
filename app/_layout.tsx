@@ -26,6 +26,7 @@ export default function Layout() {
       <Stack.Screen name="index" options={{ title: 'Minhas Séries' }} />
       <Stack.Screen name="form" options={{ title: 'Série', presentation: 'modal' }} />
       <Stack.Screen name="detalhe" options={{ title: 'Detalhes' }} />
+      <Stack.Screen name="profile" options={{ title: 'Perfil' }} />
     </Stack>
   );
 }

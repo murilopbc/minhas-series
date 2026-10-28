@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
 import { useSeries } from '../src/hooks/useSeries';
 import { SerieItem } from '../src/components/SerieItem';
 import { FilterBar } from '../src/components/FilterBar';
@@ -28,6 +28,16 @@ export default function Home() {
 
   return (
     <View className="flex-1 bg-gray-50 p-4">
+      <Stack.Screen
+      options={{
+        title: 'Minhas Séries',
+        headerRight: () => (
+          <TouchableOpacity onPress={() => router.push('/profile')}>
+            <Text className="text-2xl">👤</Text>
+          </TouchableOpacity>
+        ),
+      }}
+    />
       <FilterBar filter={filter} counts={counts} onChange={setFilter} />
 
       <FlatList

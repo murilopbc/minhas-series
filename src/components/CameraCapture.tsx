@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface CameraCaptureProps {
   onCapture: (uri: string) => void;
@@ -10,6 +11,7 @@ interface CameraCaptureProps {
 export function CameraCapture({ onCapture, onClose }: CameraCaptureProps) {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
+  const insets = useSafeAreaInsets();
 
   // Estado 1 — consultando o sistema
   if (!permission) {
@@ -55,17 +57,34 @@ export function CameraCapture({ onCapture, onClose }: CameraCaptureProps) {
   }
 
   return (
-    <View className="flex-1 bg-black">
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <CameraView ref={cameraRef} style={{ flex: 1 }} facing="front" />
 
-      <View className="flex-row justify-around items-center py-6 bg-black">
+      <View
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: insets.bottom + 24,
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+        }}
+      >
         <TouchableOpacity onPress={onClose}>
-          <Text className="text-white text-lg">Cancelar</Text>
+          <Text style={{ color: 'white', fontSize: 18 }}>Cancelar</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          className="w-20 h-20 rounded-full bg-white border-4 border-gray-400"
           onPress={tirarFoto}
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: 40,
+            backgroundColor: 'white',
+            borderWidth: 4,
+            borderColor: '#9ca3af',
+          }}
         />
       </View>
     </View>

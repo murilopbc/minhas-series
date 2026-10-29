@@ -5,11 +5,20 @@ import { useSeries } from '../src/hooks/useSeries';
 import { SerieItem } from '../src/components/SerieItem';
 import { FilterBar } from '../src/components/FilterBar';
 import { EmptyState } from '../src/components/EmptyState';
+import { useAuthContext } from '../src/contexts/AuthContext';
 
 export default function Home() {
+  const { signOut } = useAuthContext();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { series, counts, filter, setFilter, loading, toggleSerie, removeSerie } = useSeries();
+
+  function handleSignOut() {
+    Alert.alert('Sair', 'Deseja sair da sua conta?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Sair', style: 'destructive', onPress: signOut },
+    ]);
+  }
 
   function handleDelete(id: number) {
     Alert.alert('Excluir série', 'Tem certeza que deseja excluir?', [
@@ -29,15 +38,20 @@ export default function Home() {
   return (
     <View className="flex-1 bg-gray-50 p-4">
       <Stack.Screen
-      options={{
-        title: 'Minhas Séries',
-        headerRight: () => (
-          <TouchableOpacity onPress={() => router.push('/profile')}>
-            <Text className="text-2xl">👤</Text>
-          </TouchableOpacity>
-        ),
-      }}
-    />
+        options={{
+          title: 'Minhas Séries',
+          headerRight: () => (
+            <View className="flex-row items-center" style={{ gap: 16 }}>
+              <TouchableOpacity onPress={() => router.push('/profile')}>
+                <Text className="text-2xl">👤</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleSignOut}>
+                <Text className="text-red-600 font-bold">Sair</Text>
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
       <FilterBar filter={filter} counts={counts} onChange={setFilter} />
 
       <FlatList
